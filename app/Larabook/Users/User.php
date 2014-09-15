@@ -5,13 +5,13 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Eloquent, Hash;
-use Larabook\Registration\Events\UserRegistered;
+use Larabook\Registration\Events\UserHasRegistered;
 use Laracasts\Commander\Events\EventGenerator;
 use Laracasts\Presenter\PresentableTrait;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
-	use UserTrait, RemindableTrait, EventGenerator, PresentableTrait;
+	use UserTrait, RemindableTrait, EventGenerator, PresentableTrait, FollowableTrait;
 
     /**
      * Fields that can be mass assigned
@@ -55,7 +55,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      */
     public function statuses()
     {
-        return $this->hasMany('Larabook\Statuses\Status');
+        return $this->hasMany('Larabook\Statuses\Status')->latest();
     }
 
     /**
@@ -71,9 +71,22 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $user = new static(compact('username','email','password'));
 
         //raise an event
-        $user->raise(new UserRegistered($user));
+        $user->raise(new UserHasRegistered($user));
 
         return $user;
+    }
+
+    /**
+     * Determine of the given user is the same
+     * as the current one
+     *
+     * @param $user
+     * @return mixed
+     */
+    public function is($user)
+    {
+        if (is_null($user)) return false;
+        return $this->username == $user->username;
     }
 
 }

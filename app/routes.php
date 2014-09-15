@@ -10,13 +10,14 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-//Event::listen('Larabook.Registration.Events.UserRegistered', function(){
-//    dd('send a notification email');
-//});
+/*Event::listen('Larabook.Registration.Events.UserRegistered', function(){
+    dd('send a notification email');
+}); */
 
 //Event::listen('illuminate.query', function($query){
 //    var_dump($query);
 //});
+
 
 Route::get('/', ['as' => 'home', 'uses' => 'PagesController@home']);
 
@@ -60,9 +61,41 @@ Route::get('logout',[
  */
 Route::get('statuses', [
         'as' => 'statuses_path',
-        'uses' => 'StatusController@index'
+        'uses' => 'StatusesController@index'
 ]);
-Route::post('statuses', ['as' => 'statuses_path','uses' => 'StatusController@store']);
+Route::post('statuses', ['as' => 'statuses_path','uses' => 'StatusesController@store']);
+
+/**
+ * Users
+ */
+Route::get('users',[
+    'as' => 'users_path',
+    'uses' => 'UsersController@index'
+]);
+
+/**
+ * User Profiles
+ */
+Route::get('@{username}',[
+    'as' => 'profile_path',
+    'uses' => 'UsersController@show'
+]);
+
+/**
+ * Follows
+ */
+Route::post('follows',[
+    'as' => 'follows_path',
+    'uses' => 'FollowersController@store'
+]);
+
+
+Route::delete('follows/{id}',[
+    'as' => 'follow_path',
+    'uses' => 'FollowersController@destroy'
+]);
+
+
 
 
 

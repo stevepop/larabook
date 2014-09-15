@@ -12,6 +12,20 @@ class StatusRepository {
     }
 
     /**
+     * Get the feed for a user
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public function getFeedForUser(User $user)
+    {
+        $userIds = $user->followedUsers()->lists('followed_id');
+        $userIds[] = $user->id;
+
+        return Status::whereIn('user_id', $userIds)->latest()->get();
+    }
+
+    /**
      * Save a new status for a user
      *
      * @param Status $status

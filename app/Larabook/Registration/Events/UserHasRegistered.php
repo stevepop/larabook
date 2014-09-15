@@ -2,13 +2,11 @@
 
 use Larabook\Users\User;
 
-class UserRegistered {
+class UserHasRegistered {
     public $user;
 
     function __construct(User $user)
     {
         $this->user = $user;
     }
-
-
 }

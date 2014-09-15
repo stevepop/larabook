@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Laracasts\Commander\CommanderTrait;
 
 class BaseController extends Controller {
+    use CommanderTrait;
 
 	/**
 	 * Setup the layout used by the controller.
@@ -18,6 +20,8 @@ class BaseController extends Controller {
 
         // share this variable across views
         View::share('currentUser', Auth::user());
+        View::share('signedIn', Auth::user());
+
 	}
 
 }
